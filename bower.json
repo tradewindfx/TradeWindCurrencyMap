@@ -2,8 +2,7 @@
   "name": "capabilities-map",
   "private": true,
   "dependencies": {
-    "bootstrap-sass": "~3.3.5",
-    "cartodb.js": "^3.15.10"
+    "bootstrap-sass": "~3.3.5"
   },
   "overrides": {
     "bootstrap-sass": {
