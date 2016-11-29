@@ -128,8 +128,10 @@ PaymentsCapabilitiesMap.prototype._addCartoLayer = function () {
     sublayers: [{
       sql: _this.query,
       cartocss: this.cartocss.replace('{{ category_code }}', this.currentCategory.code).replace('{{ category_color }}', this.currentCategory.color),
-      interactivity: 'currency_name, currency_symbol, payments, collections, cutoff, category'
-    }]
+      interactivity: 'currency_name, currency_symbol, payments, collections, cutoff, category',
+    }],
+  }, {
+    https: true
   })
   .addTo(this.map)
   .on('done', function(layer) {
