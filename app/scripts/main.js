@@ -234,7 +234,7 @@ class PaymentsCapabilitiesMap {
     let sql = new cartodb.SQL({user: 'ebury'});
     let $countryInfo = $(this.countryInfo.$el);
     $countryInfo.addClass('country-info--loading');
-    sql.execute("SELECT * FROM payments_and_capabilities WHERE country_iso_code = '{{country}}'", {country: countryCode})
+    sql.execute('SELECT * FROM payments_and_capabilities WHERE country_iso_code = \'{{country}}\'', {country: countryCode})
       .done(data => {
         this.countryInfo.countryName = countryName;
         this.countryInfo.currencyName = data.rows[0].currency_name;
@@ -249,7 +249,7 @@ class PaymentsCapabilitiesMap {
       })
       .error(errors => {
         // errors contains a list of errors
-        console.log("errors:" + errors);
+        console.log('errors:' + errors);
       });
   }
 

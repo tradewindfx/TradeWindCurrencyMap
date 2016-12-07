@@ -244,9 +244,9 @@ div.cartodb-tooltip {
   .modal-dialog {
     margin: 0;
 
-    /*@media (min-width: $screen-md-min) {
-      margin: ;
-    }*/
+    @media (min-width: $screen-sm-min) {
+      margin: 30px auto;
+    }
   }
 
   .modal-content {
