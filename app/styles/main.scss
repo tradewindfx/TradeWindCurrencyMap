@@ -2,6 +2,8 @@ $icon-font-path: '../fonts/';
 $map-bg: #F7F7F7;
 $main: #12C2F1;
 $bg: #fff;
+$disabled: #ddd;
+$text: #333;
 
 // bower:scss
 @import "bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
@@ -43,6 +45,7 @@ $bg: #fff;
 html, body {
   height: 100%;
   font-family: 'AvenirLTStd-Light';
+  color: $text;
 }
 
 .title {
@@ -51,29 +54,51 @@ html, body {
   font-family: 'AvenirLTStd-Medium';
   position: absolute;
   z-index: 1;
+  display: none;
+
+  @media (min-width: $screen-md-min) {
+    display: block;
+  }
 }
 
 .categories {
   position: absolute;
-  bottom: 50px;
+  bottom: 0;
   width: 100%;
-  z-index: 1;
+  z-index: 1000001;
+
+  @media (min-width: $screen-md-min) {
+    bottom: 50px;
+  }
 
   .btn-group {
-    width: 1200px;
-    margin: auto;
-    padding-left: 15px;
-    padding-right: 15px;
+    width: 100%;
+    display: block;
+
+    @media (min-width: $screen-md-min) {
+      display: table;
+      width: $screen-md;
+      margin: auto;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    @media (min-width: $screen-lg-min) {
+      width: $screen-lg;
+    }
 
     .btn {
       border-color: $main;
       color: $main;
       background-color: $bg;
       outline: none;
-
-      &:not(:first-child) {
-        border-left: 0;
-      }
+      display: block;
+      width: 100%;
+      border-radius: 0;
+      margin-left: 0;
+      border-left: none;
+      border-right: none;
+      border-top: none;
 
       &.active, &:active, &:focus {
         background-color: $main;
@@ -82,13 +107,28 @@ html, body {
       }
 
       &:first-child {
-        border-bottom-left-radius: 20px;
-        border-top-left-radius: 20px;
+        border-top: 1px solid $main;
       }
 
-      &:last-child {
-        border-bottom-right-radius: 20px;
-        border-top-right-radius: 20px;
+      @media (min-width: $screen-md-min) {
+
+        display: table-cell;
+        width: 1%;
+        border: 1px solid $main;
+
+        &:not(:first-child) {
+          border-left: 0;
+        }
+
+        &:first-child {
+          border-bottom-left-radius: 20px;
+          border-top-left-radius: 20px;
+        }
+
+        &:last-child {
+          border-bottom-right-radius: 20px;
+          border-top-right-radius: 20px;
+        }
       }
     }
   }
@@ -147,11 +187,12 @@ html, body {
   }
 
   .leaflet-control-zoom {
-    /*position: absolute;
-    right: 0;
-    top: 100px;
-    z-index: 1;*/
+    display: none;
     box-shadow: none;
+
+    @media (min-width: $screen-md-min) {
+      display: block;
+    }
 
     .leaflet-control-zoom-in, .leaflet-control-zoom-out {
       background-color: $bg;
@@ -172,10 +213,164 @@ html, body {
         color: $bg;
         cursor: pointer;
       }
+
+      &.leaflet-disabled {
+        pointer-events: none;
+        color: $disabled;
+        border-color: $disabled;
+      }
     }
   }
 }
 
 div.cartodb-tooltip {
   overflow-y: visible;
+  z-index: 10000001;
+}
+
+.modal-backdrop {
+  z-index: 10000002;
+
+  &.in {
+    opacity: 0.3;
+  }
+}
+
+.modal {
+  z-index: 10000003;
+}
+
+.country-info {
+  .modal-dialog {
+    margin: 0;
+
+    /*@media (min-width: $screen-md-min) {
+      margin: ;
+    }*/
+  }
+
+  .modal-content {
+    border-radius: 0;
+    border: none;
+    box-shadow: 2px 2px 5px rgba(0,0,0,.2);
+    padding: 0;
+
+    @media (min-width: $screen-md-min) {
+      padding: 25px;
+    }
+  }
+
+  .modal-header {
+    border-bottom: none;
+  }
+
+  .modal-footer {
+    border-top: none;
+    text-align: center;
+
+    .btn {
+      border-radius: 20px;
+      background-color: $main;
+      color: $bg;
+      padding-left: 40px;
+      padding-right: 40px;
+      outline: 0;
+    }
+  }
+
+  .close {
+    font-size: 40px;
+    outline: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-top: 15px;
+    margin-right: 15px;
+
+    @media (min-width: $screen-md-min) {
+
+    }
+  }
+
+  .country-info__name {
+    color: $main;
+    text-transform: uppercase;
+  }
+
+  .country-info__currency {
+    margin-left: 5px;
+  }
+
+  .nav-tabs {
+    margin-bottom: 15px;
+
+    > li {
+      display: table-cell;
+      width: 1%;
+      margin-bottom: 0;
+
+      > a, > a:focus, > a:active {
+        text-transform: uppercase;
+        border: none;
+        border-bottom: 3px solid $disabled;
+        color: $text;
+        border-radius: 0;
+
+        &:hover {
+          background-color: transparent;
+          border: none;
+          border-bottom: 3px solid $main;
+        }
+      }
+
+      &.active {
+        > a, > a:focus, > a:active {
+          color: $main;
+          border: none;
+          border-bottom: 3px solid $main;
+
+          &:hover {
+            border: none;
+            border-bottom: 3px solid $main;
+          }
+        }
+      }
+    }
+  }
+  .country-info__table {
+    width: 100%;
+
+    th {
+      color: $main;
+      font-weight: normal;
+      width: 1%;
+      padding: 5px 10px 5px 0;
+    }
+
+    td {
+      padding: 5px 0 5px 10px;
+    }
+  }
+
+  .country-info__loading {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: $bg;
+    justify-content: center;
+    align-items: center;
+
+    .fa {
+      color: $main;
+    }
+  }
+
+  &.country-info--loading {
+    .country-info__loading {
+      display: flex;
+    }
+  }
 }
