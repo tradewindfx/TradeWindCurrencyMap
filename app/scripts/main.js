@@ -151,6 +151,10 @@ class PaymentsCapabilitiesMap {
     }).addTo(this.map);
   }
 
+  resetZoom() {
+    this.map.setView(new L.LatLng(this.options.center[0], this.options.center[1]), this.options.zoom);
+  }
+
   addCartoLayer() {
     cartodb.createLayer(this.map, {
       user_name: 'ebury',
@@ -259,6 +263,7 @@ class PaymentsCapabilitiesMap {
   }
 
   changeCategory(category) {
+    this.resetZoom();
     this.currentCategory = _.findWhere(this.categories, {code: category});
     this.cartoLayer.setCartoCSS(this.cartocss.replace('{{ category_code }}', this.currentCategory.code).replace('{{ category_color }}', this.currentCategory.color));
   }
