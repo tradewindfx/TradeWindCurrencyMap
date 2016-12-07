@@ -182,7 +182,7 @@ html, body {
     }
 
     .leaflet-control-zoom-in, .leaflet-control-zoom-out {
-      background-color: $bg;
+      background-color: rgba($bg, 0.5);
       color: $main;
       border: 1px solid $main;
       width: 30px;
