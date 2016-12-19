@@ -201,10 +201,11 @@ html, body {
         cursor: pointer;
       }
 
-      &.leaflet-disabled {
-        pointer-events: none;
+      &.leaflet-disabled, &.leaflet-disabled:hover {
+        background-color: rgba($bg, 0.5);
         color: $disabled;
         border-color: $disabled;
+        cursor: not-allowed;
       }
     }
   }
