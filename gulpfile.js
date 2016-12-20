@@ -44,7 +44,7 @@ gulp.task('scripts', () => {
     .pipe(reload({stream: true}));
 });
 
-function lint(files, options) {
+function lint(files, options) {bo
   return gulp.src(files)
     .pipe(reload({stream: true, once: true}))
     .pipe($.eslint(options))

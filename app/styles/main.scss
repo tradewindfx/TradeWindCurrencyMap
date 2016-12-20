@@ -275,19 +275,18 @@ div.cartodb-tooltip {
     top: 0;
     margin-top: 15px;
     margin-right: 15px;
+  }
 
-    @media (min-width: $screen-md-min) {
-
+  .modal-title {
+    padding-right: 30px;
+    .country-info__name {
+      color: $main;
+      text-transform: uppercase;
     }
-  }
 
-  .country-info__name {
-    color: $main;
-    text-transform: uppercase;
-  }
-
-  .country-info__currency {
-    margin-left: 5px;
+    .country-info__currency {
+      margin-left: 5px;
+    }
   }
 
   .nav-tabs {
@@ -327,6 +326,11 @@ div.cartodb-tooltip {
       }
     }
   }
+
+  .tab-content {
+    overflow: hidden;
+  }
+
   .country-info__table {
     width: 100%;
 
