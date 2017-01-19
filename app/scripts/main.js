@@ -52,10 +52,12 @@ class PaymentsCapabilitiesMap {
         <h6 class="map__tooltip__title">{{ currency_name }}</h6>
         <table class="map__tooltip__data">
           <tbody>
+            {{#currency_symbol}}
             <tr>
               <td>Currency</td>
               <td>{{ currency_symbol }}</td>
             </tr>
+            {{/currency_symbol}}
             <tr>
               <td>Payments</td>
               <td>{{#payments}}Yes{{/payments}}{{^payments}}No{{/payments}}</td>
@@ -63,15 +65,19 @@ class PaymentsCapabilitiesMap {
            <tr>
               <td>Collections</td>
               <td>{{#collections}}Yes{{/collections}}{{^collections}}No{{/collections}}</td>
-            </tr>           
+            </tr>    
+            {{#cutoff}}
             <tr>
               <td>Cut off</td>
               <td>{{ cutoff }}</td>
             </tr>
+            {{/cutoff}}
+            {{#value_date}}
             <tr>
               <td>Value date</td>
               <td>{{ value_date }}</td>
             </tr>
+            {{/value_date}}
           </tbody>  
         </table>
       </div>

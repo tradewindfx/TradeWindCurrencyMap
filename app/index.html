@@ -54,31 +54,31 @@
             </h3>
           </div>
           <div class="modal-body">
-            <ul class="nav nav-tabs nav-justified">
+            <!--ul class="nav nav-tabs nav-justified">
               <li role="presentation" class="active"><a href="#keypoints" data-toggle="tab">Key points</a></li>
               <li role="presentation"><a href="#liquidity" data-toggle="tab">Liquidity</a></li>
-            </ul>
+            </ul-->
             <div class="tab-content">
               <div role="tabpanel" class="tab-pane active" id="keypoints">
                 <table class="country-info__table">
                   <tbody>
-                    <tr>
+                    <tr v-if="currencySymbol">
                       <th>Currency</th>
                       <td>{{ currencySymbol }}</td>
                     </tr>
-                    <tr>
+                    <tr v-if="payments !== null">
                       <th>Payments</th>
                       <td>{{ payments ? 'Yes' : 'No' }}</td>
                     </tr>
-                   <tr>
+                    <tr v-if="collections !== null">
                       <th>Collections</th>
                       <td>{{ collections ? 'Yes' : 'No' }}</td>
                     </tr>
-                    <tr>
+                    <tr v-if="cutoff">
                       <th>Cut off</th>
                       <td>{{ cutoff }}</td>
                     </tr>
-                    <tr>
+                    <tr v-if="valueDate">
                       <th>Value date</th>
                       <td>{{ valueDate }}</td>
                     </tr>
@@ -86,7 +86,7 @@
                 </table>
                 <p>{{ info }}</p>
               </div>
-              <div role="tabpanel" class="tab-pane" id="liquidity">...</div>
+              <!--div role="tabpanel" class="tab-pane" id="liquidity">...</div-->
             </div>
           </div>
           <div class="modal-footer">
