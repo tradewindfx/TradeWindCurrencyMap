@@ -10,6 +10,7 @@ See it online: https://ebury.github.io/payments-capabilities-map/
 git clone git@github.com:Ebury/payments-capabilities-map.git
 cd payments-capabilities-map
 npm install
+bower install
 ```
 
 ## Running
