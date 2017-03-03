@@ -5,16 +5,16 @@ class PaymentsCapabilitiesMap {
     this.container = document.querySelector('.js-map');
     this.query = `
       SELECT world_borders.*, payments_and_capabilities.currency_name, payments_and_capabilities.currency_symbol, 
-        payments_and_capabilities.payments, payments_and_capabilities.collections, payments_and_capabilities.cutoff, 
-        payments_and_capabilities.category, payments_and_capabilities.value_date
+        payments_and_capabilities.payments, payments_and_capabilities.payments_in_local_currency, 
+        payments_and_capabilities.collections_in_local_currency, payments_and_capabilities.cutoff_payment, 
+        payments_and_capabilities.value_date_payment
       FROM world_borders
-      LEFT JOIN payments_and_capabilities
+      LEFT JOIN payments_and_capabilities_v2 AS payments_and_capabilities
         ON world_borders.iso_a3=payments_and_capabilities.country_iso_code
-      WHERE world_borders.iso_a3 != 'ATA'
       ORDER BY world_borders.labelrank;
     `;
     this.cartocss = `
-      #world_borders{
+      #world_borders {
         polygon-fill: #D9D9D9;
         polygon-opacity: 1;
         line-color: #FFF;
@@ -22,7 +22,7 @@ class PaymentsCapabilitiesMap {
         line-opacity: 1;
       }
       
-      #world_borders[category={{ category_code }}]{
+      #world_borders[{{ category_code }}=true] {
         polygon-fill: {{ category_color }};
       }
       
@@ -60,36 +60,36 @@ class PaymentsCapabilitiesMap {
             {{/currency_symbol}}
             <tr>
               <td>Payments</td>
-              <td>{{#payments}}Yes{{/payments}}{{^payments}}No{{/payments}}</td>
+              <td>{{#payments_in_local_currency}}Yes{{/payments_in_local_currency}}{{^payments_in_local_currency}}No{{/payments_in_local_currency}}</td>
             </tr>
-           <tr>
+            <tr>
               <td>Collections</td>
-              <td>{{#collections}}Yes{{/collections}}{{^collections}}No{{/collections}}</td>
+              <td>{{#collections_in_local_currency}}Yes{{/collections_in_local_currency}}{{^collections_in_local_currency}}No{{/collections_in_local_currency}}</td>
             </tr>    
-            {{#cutoff}}
+            {{#cutoff_payment}}
             <tr>
               <td>Cut off</td>
-              <td>{{ cutoff }}</td>
+              <td>{{ cutoff_payment }}</td>
             </tr>
-            {{/cutoff}}
-            {{#value_date}}
+            {{/cutoff_payment}}
+            {{#value_date_payment}}
             <tr>
               <td>Value date</td>
-              <td>{{ value_date }}</td>
+              <td>{{ value_date_payment }}</td>
             </tr>
-            {{/value_date}}
+            {{/value_date_payment}}
           </tbody>  
         </table>
       </div>
       `;
 
-    const PAYMENTS_COLLECTIONS_LOCAL_CURRENCY = 1;
-    const PAYMENTS_LOCAL_CURRENCY = 2;
-    const PAYMENTS_NON_LOCAL_CURRENCY = 3;
+    const PAYMENTS = 'payments';
+    const PAYMENTS_LOCAL_CURRENCY = 'payments_in_local_currency';
+    const COLLECTIONS_LOCAL_CURRENCY = 'collections_in_local_currency';
 
     this.categories = [
       {
-        code: PAYMENTS_COLLECTIONS_LOCAL_CURRENCY,
+        code: PAYMENTS,
         color: '#00C0F0'
       },
       {
@@ -97,12 +97,12 @@ class PaymentsCapabilitiesMap {
         color: '#9AD7E5'
       },
       {
-        code: PAYMENTS_NON_LOCAL_CURRENCY,
+        code: COLLECTIONS_LOCAL_CURRENCY,
         color: '#144257'
       }
     ];
 
-    this.currentCategory = _.findWhere(this.categories, {code: PAYMENTS_COLLECTIONS_LOCAL_CURRENCY});
+    this.currentCategory = _.findWhere(this.categories, {code: PAYMENTS});
 
     this.configureSize();
     this.createMap();
@@ -168,7 +168,8 @@ class PaymentsCapabilitiesMap {
       sublayers: [{
         sql: this.query,
         cartocss: this.cartocss.replace('{{ category_code }}', this.currentCategory.code).replace('{{ category_color }}', this.currentCategory.color),
-        interactivity: 'currency_name, currency_symbol, payments, collections, cutoff, category, cartodb_id, iso_a3, value_date, name'
+        interactivity: 'currency_name, currency_symbol, payments, payments_in_local_currency, ' +
+          'collections_in_local_currency, cutoff_payment, cartodb_id, iso_a3, value_date_payment, name'
       }],
     }, {
       https: true
@@ -191,17 +192,16 @@ class PaymentsCapabilitiesMap {
         {
           currency_name: 'currency_name',
           currency_symbol: 'currency_symbol',
-          payments: 'payments',
-          collections: 'collections',
-          cutoff: 'cutoff',
-          category: 'category',
-          value_date: 'value_date'
+          payments_in_local_currency: 'payments_in_local_currency',
+          collections_in_local_currency: 'collections_in_local_currency',
+          cutoff_payment: 'cutoff_payment',
+          value_date_payment: 'value_date_payment'
         }]
     });
 
     this.cartoLayer.off('mouseover')
       .on('mouseover', (e, latlng, pos, data) => {
-        if (data.category === this.currentCategory.code) {
+        if (data[this.currentCategory.code]) {
           tooltip.show(pos, data);
           tooltip.showing = true;
         }
@@ -215,8 +215,8 @@ class PaymentsCapabilitiesMap {
         countryName: null,
         currencyName: null,
         currencySymbol: null,
-        payments: null,
-        collections: null,
+        paymentsInLocalCurrency: null,
+        collectionsInLocalCurrency: null,
         cutoff: null,
         valueDate: null,
         info: null
@@ -224,7 +224,7 @@ class PaymentsCapabilitiesMap {
     });
     this.cartoLayer
       .on('mouseover', (e, latlng, pos, data) => {
-        if (data.category === this.currentCategory.code) {
+        if (data[this.currentCategory.code]) {
           this.container.style.cursor = 'pointer';
         } else {
           this.container.style.cursor = '';
@@ -234,7 +234,7 @@ class PaymentsCapabilitiesMap {
         this.container.style.cursor = '';
       })
       .on('featureClick', (e, latlng, pos, data) => {
-        if (data.category === this.currentCategory.code) {
+        if (data[this.currentCategory.code]) {
           this.showCountryInfo(data.name, data.iso_a3);
         }
       });
@@ -244,15 +244,15 @@ class PaymentsCapabilitiesMap {
     let sql = new cartodb.SQL({user: 'ebury'});
     let $countryInfo = $(this.countryInfo.$el);
     $countryInfo.addClass('country-info--loading');
-    sql.execute('SELECT * FROM payments_and_capabilities WHERE country_iso_code = \'{{country}}\'', {country: countryCode})
+    sql.execute('SELECT * FROM payments_and_capabilities_v2 WHERE country_iso_code = \'{{country}}\'', {country: countryCode})
       .done(data => {
         this.countryInfo.countryName = countryName;
         this.countryInfo.currencyName = data.rows[0].currency_name;
         this.countryInfo.currencySymbol = data.rows[0].currency_symbol;
-        this.countryInfo.payments = data.rows[0].payments;
-        this.countryInfo.collections = data.rows[0].collections;
-        this.countryInfo.cutoff = data.rows[0].cutoff;
-        this.countryInfo.valueDate = data.rows[0].value_date;
+        this.countryInfo.paymentsInLocalCurrency = data.rows[0].payments_in_local_currency;
+        this.countryInfo.collectionsInLocalCurrency = data.rows[0].collections_in_local_currency;
+        this.countryInfo.cutoff = data.rows[0].cutoff_payment;
+        this.countryInfo.valueDate = data.rows[0].value_date_payment;
         this.countryInfo.info = data.rows[0].info;
         $countryInfo.modal('show');
         $countryInfo.removeClass('country-info--loading');
@@ -265,7 +265,7 @@ class PaymentsCapabilitiesMap {
 
   handleCategoryChange() {
     $('.js-category')
-      .on('change', e => this.changeCategory(parseInt($(e.currentTarget).val())));
+      .on('change', e => this.changeCategory($(e.currentTarget).val()));
   }
 
   changeCategory(category) {
