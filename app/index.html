@@ -28,13 +28,13 @@
     <div class="categories">
       <div class="btn-group btn-group-justified" data-toggle="buttons">
         <label class="btn active">
-          <input type="radio" name="category" class="js-category" autocomplete="off" checked value="1"> Payments & collections in local currency
+          <input type="radio" name="category" class="js-category" autocomplete="off" checked value="payments"> Where Ebury can send funds
         </label>
         <label class="btn btn-primary">
-          <input type="radio" name="category" class="js-category"  autocomplete="off" value="2"> Send payments in local currency
+          <input type="radio" name="category" class="js-category"  autocomplete="off" value="payments_in_local_currency"> Where Ebury can send funds in local currency
         </label>
         <label class="btn btn-primary">
-          <input type="radio" name="category" class="js-category"  autocomplete="off" value="3"> Send payments in non-local currency
+          <input type="radio" name="category" class="js-category"  autocomplete="off" value="collections_in_local_currency"> Where Ebury can collect funds in local currency
         </label>
       </div>
     </div>
@@ -66,13 +66,13 @@
                       <th>Currency</th>
                       <td>{{ currencySymbol }}</td>
                     </tr>
-                    <tr v-if="payments !== null">
+                    <tr v-if="paymentsInLocalCurrency !== null">
                       <th>Payments</th>
-                      <td>{{ payments ? 'Yes' : 'No' }}</td>
+                      <td>{{ paymentsInLocalCurrency ? 'Yes' : 'No' }}</td>
                     </tr>
-                    <tr v-if="collections !== null">
+                    <tr v-if="collectionsInLocalCurrency !== null">
                       <th>Collections</th>
-                      <td>{{ collections ? 'Yes' : 'No' }}</td>
+                      <td>{{ collectionsInLocalCurrency ? 'Yes' : 'No' }}</td>
                     </tr>
                     <tr v-if="cutoff">
                       <th>Cut off</th>
