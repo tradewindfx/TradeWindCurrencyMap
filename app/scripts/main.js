@@ -9,7 +9,7 @@ class PaymentsCapabilitiesMap {
         payments_and_capabilities.collections_in_local_currency, payments_and_capabilities.cutoff_payment, 
         payments_and_capabilities.value_date_payment
       FROM world_borders
-      LEFT JOIN payments_and_capabilities_v2 AS payments_and_capabilities
+      LEFT JOIN payments_and_capabilities AS payments_and_capabilities
         ON world_borders.iso_a3=payments_and_capabilities.country_iso_code
       ORDER BY world_borders.labelrank;
     `;
@@ -244,7 +244,7 @@ class PaymentsCapabilitiesMap {
     let sql = new cartodb.SQL({user: 'ebury'});
     let $countryInfo = $(this.countryInfo.$el);
     $countryInfo.addClass('country-info--loading');
-    sql.execute('SELECT * FROM payments_and_capabilities_v2 WHERE country_iso_code = \'{{country}}\'', {country: countryCode})
+    sql.execute('SELECT * FROM payments_and_capabilities WHERE country_iso_code = \'{{country}}\'', {country: countryCode})
       .done(data => {
         this.countryInfo.countryName = countryName;
         this.countryInfo.currencyName = data.rows[0].currency_name;
