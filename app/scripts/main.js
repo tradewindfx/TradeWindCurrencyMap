@@ -23,7 +23,7 @@ class PaymentsCapabilitiesMap {
       }
       
       #world_borders[{{ category_code }}=true] {
-        polygon-fill: {{ category_color }};
+        polygon-fill: #00BEF0;
       }
       
       #world_borders::labels
@@ -89,16 +89,13 @@ class PaymentsCapabilitiesMap {
 
     this.categories = [
       {
-        code: PAYMENTS,
-        color: '#00C0F0'
+        code: PAYMENTS
       },
       {
-        code: PAYMENTS_LOCAL_CURRENCY,
-        color: '#9AD7E5'
+        code: PAYMENTS_LOCAL_CURRENCY
       },
       {
-        code: COLLECTIONS_LOCAL_CURRENCY,
-        color: '#144257'
+        code: COLLECTIONS_LOCAL_CURRENCY
       }
     ];
 
@@ -167,7 +164,7 @@ class PaymentsCapabilitiesMap {
       type: 'cartodb',
       sublayers: [{
         sql: this.query,
-        cartocss: this.cartocss.replace('{{ category_code }}', this.currentCategory.code).replace('{{ category_color }}', this.currentCategory.color),
+        cartocss: this.cartocss.replace('{{ category_code }}', this.currentCategory.code),
         interactivity: 'currency_name, currency_symbol, payments, payments_in_local_currency, ' +
           'collections_in_local_currency, cutoff_payment, cartodb_id, iso_a3, value_date_payment, name'
       }],
@@ -271,7 +268,7 @@ class PaymentsCapabilitiesMap {
   changeCategory(category) {
     this.resetZoom();
     this.currentCategory = _.findWhere(this.categories, {code: category});
-    this.cartoLayer.setCartoCSS(this.cartocss.replace('{{ category_code }}', this.currentCategory.code).replace('{{ category_color }}', this.currentCategory.color));
+    this.cartoLayer.setCartoCSS(this.cartocss.replace('{{ category_code }}', this.currentCategory.code));
   }
 
 }
