@@ -18,3 +18,9 @@ bower install
 ```bash
 gulp serve
 ```
+
+## Deploying
+
+```bash
+gulp deploy
+```
