@@ -76,8 +76,8 @@ html, body {
     }
 
     .btn {
-      border-color: $main;
-      color: $main;
+      border-color: $secondary;
+      color: $secondary;
       background-color: rgba($bg, 0.5);
       outline: none;
       display: block;
@@ -99,7 +99,7 @@ html, body {
 
         display: table-cell;
         width: 1%;
-        border: 1px solid $main;
+        border: 1px solid $secondary;
 
         &:not(:first-child) {
           border-left: 0;
