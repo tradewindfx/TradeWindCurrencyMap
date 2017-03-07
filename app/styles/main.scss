@@ -1,6 +1,7 @@
 $icon-font-path: '../fonts/';
 $map-bg: #F7F7F7;
 $main: #12C2F1;
+$secondary: #37474F;
 $bg: #fff;
 $disabled: #ddd;
 $text: #333;
@@ -88,13 +89,10 @@ html, body {
       border-top: none;
 
       &.active, &:active, &:focus {
-        background-color: $main;
+        background-color: $secondary;
+        border-color: $secondary;
         color: $bg;
         box-shadow: none;
-      }
-
-      &:first-child {
-        border-top: 1px solid $main;
       }
 
       @media (min-width: $screen-md-min) {
