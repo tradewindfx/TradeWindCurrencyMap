@@ -112,7 +112,7 @@ class PaymentsCapabilitiesMap {
       {
         minScreenWidth: 1200,
         center: [30, 0],
-        zoom: 2
+        zoom: 3
       },
       {
         minScreenWidth: 992,
@@ -122,7 +122,7 @@ class PaymentsCapabilitiesMap {
       {
         minScreenWidth: 768,
         center: [30, 0],
-        zoom: 1
+        zoom: 2
       },
       {
         minScreenWidth: 0,
