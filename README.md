@@ -1,6 +1,6 @@
-# Ebury's coverage: Payments and capabilities map
+# TradeWind FX - Payments and Currency Account Coverage
 
-Small project for displaying a map with the payments and capabilities coverage of [Ebury](https://ebury.com)
+Small project developed by Ebury for displaying a map with the payments and capabilities coverage of TradeWind FX (www.tradewindfx.com)
 
 See it online: https://ebury.github.io/payments-capabilities-map/
 
